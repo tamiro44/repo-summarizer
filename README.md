@@ -4,6 +4,12 @@ A production-ready FastAPI service that summarizes GitHub repositories using an 
 
 ## Quick Start
 
+# PowerShell
+copy .env.example .env
+$env:LLM_API_KEY="..."
+$env:GITHUB_TOKEN="..."
+python -m uvicorn main:app --reload
+
 ```bash
 # Install dependencies
 pip install -r requirements.txt
