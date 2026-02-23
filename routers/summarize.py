@@ -41,7 +41,9 @@ async def summarize_repo(
         raise HTTPException(status_code=502, detail=str(exc)) from exc
     except LLMClientError as exc:
         logger.error("LLM error: %s", exc)
-        raise HTTPException(status_code=502, detail=f"LLM service error: {exc}") from exc
+        raise HTTPException(
+            status_code=502, detail=f"LLM service error: {exc}"
+        ) from exc
     except Exception as exc:
         logger.exception("Unexpected error during summarization")
         raise HTTPException(status_code=500, detail="Internal server error") from exc

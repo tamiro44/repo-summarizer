@@ -25,19 +25,13 @@ class Settings:
     github_api_base: str = field(
         default_factory=lambda: os.getenv("GITHUB_API_BASE", "https://api.github.com")
     )
-    github_token: str | None = field(
-        default_factory=lambda: os.getenv("GITHUB_TOKEN")
-    )
+    github_token: str | None = field(default_factory=lambda: os.getenv("GITHUB_TOKEN"))
     github_timeout: int = int(os.getenv("GITHUB_TIMEOUT", "30"))
 
     # LLM
-    llm_api_key: str = field(
-        default_factory=lambda: os.getenv("LLM_API_KEY", "")
-    )
+    llm_api_key: str = field(default_factory=lambda: os.getenv("LLM_API_KEY", ""))
     llm_api_base: str = field(
-        default_factory=lambda: os.getenv(
-            "LLM_API_BASE", "https://api.openai.com/v1"
-        )
+        default_factory=lambda: os.getenv("LLM_API_BASE", "https://api.openai.com/v1")
     )
     llm_model: str = field(
         default_factory=lambda: os.getenv("LLM_MODEL", "gpt-4o-mini")

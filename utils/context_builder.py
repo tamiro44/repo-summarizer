@@ -42,7 +42,9 @@ def build_context(
             if remaining > len(header) + 50:
                 # Fit a partial section
                 available = remaining - len(header) - 20
-                section = header + "```\n" + content[:available] + "\n... [truncated]\n```\n"
+                section = (
+                    header + "```\n" + content[:available] + "\n... [truncated]\n```\n"
+                )
                 sections.append(section)
             break
 

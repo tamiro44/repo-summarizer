@@ -41,7 +41,9 @@ class GitHubClient:
         listing of the entire tree.
         """
         url = f"{self._base}/repos/{owner}/{repo}/git/trees/HEAD?recursive=1"
-        async with httpx.AsyncClient(headers=self._headers, timeout=self._timeout) as client:
+        async with httpx.AsyncClient(
+            headers=self._headers, timeout=self._timeout
+        ) as client:
             resp = await client.get(url)
 
         if resp.status_code == 404:
@@ -72,11 +74,22 @@ class GitHubClient:
             files.append(RepoFile(path=path, size=size, score=score_file(path)))
 
         files.sort(key=lambda f: f.score)
-        logger.info("Filtered %d / %d tree entries for %s/%s", len(files), len(tree), owner, repo)
+        logger.info(
+            "Filtered %d / %d tree entries for %s/%s",
+            len(files),
+            len(tree),
+            owner,
+            repo,
+        )
         return files
 
     async def download_files(
-        self, owner: str, repo: str, files: list[RepoFile], budget: int, per_file_max: int
+        self,
+        owner: str,
+        repo: str,
+        files: list[RepoFile],
+        budget: int,
+        per_file_max: int,
     ) -> list[RepoFile]:
         """Download file contents in priority order, stopping at *budget* chars.
 
@@ -87,7 +100,9 @@ class GitHubClient:
         batch_size = 10
         result: list[RepoFile] = []
 
-        async with httpx.AsyncClient(headers=self._headers, timeout=self._timeout) as client:
+        async with httpx.AsyncClient(
+            headers=self._headers, timeout=self._timeout
+        ) as client:
             for i in range(0, len(files), batch_size):
                 if used >= budget:
                     break
@@ -107,13 +122,19 @@ class GitHubClient:
                     if used >= budget:
                         break
 
-        logger.info("Downloaded %d files (~%d chars) for %s/%s", len(result), used, owner, repo)
+        logger.info(
+            "Downloaded %d files (~%d chars) for %s/%s", len(result), used, owner, repo
+        )
         return result
 
-    async def _fetch_raw(self, client: httpx.AsyncClient, owner: str, repo: str, path: str) -> str | None:
+    async def _fetch_raw(
+        self, client: httpx.AsyncClient, owner: str, repo: str, path: str
+    ) -> str | None:
         """Fetch raw file content. Returns None on non-200 or decode errors."""
         url = f"{self._base}/repos/{owner}/{repo}/contents/{path}"
-        resp = await client.get(url, headers={"Accept": "application/vnd.github.v3.raw"})
+        resp = await client.get(
+            url, headers={"Accept": "application/vnd.github.v3.raw"}
+        )
         if resp.status_code != 200:
             return None
         try:

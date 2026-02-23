@@ -29,7 +29,11 @@ async def request_timing(request: Request, call_next):
     elapsed = time.monotonic() - t0
     response.headers["X-Process-Time"] = f"{elapsed:.3f}"
     logging.getLogger("timing").info(
-        "%s %s — %.3fs (%d)", request.method, request.url.path, elapsed, response.status_code
+        "%s %s — %.3fs (%d)",
+        request.method,
+        request.url.path,
+        elapsed,
+        response.status_code,
     )
     return response
 

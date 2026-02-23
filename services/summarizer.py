@@ -59,8 +59,12 @@ class SummarizerService:
 
         # 1. Fetch and score repository tree
         files = await self._gh.fetch_repo_files(owner, repo)
-        logger.info("[%s] Tree fetched: %d candidate files (%.1fs)",
-                     cache_key, len(files), time.monotonic() - t0)
+        logger.info(
+            "[%s] Tree fetched: %d candidate files (%.1fs)",
+            cache_key,
+            len(files),
+            time.monotonic() - t0,
+        )
 
         # 2. Download file contents within budget
         budget = self._settings.content_budget
@@ -70,12 +74,18 @@ class SummarizerService:
 
         # 3. Build LLM context
         context = build_context(files, budget, per_file_max)
-        logger.info("[%s] Context built: %d chars (%.1fs)",
-                     cache_key, len(context), time.monotonic() - t0)
+        logger.info(
+            "[%s] Context built: %d chars (%.1fs)",
+            cache_key,
+            len(context),
+            time.monotonic() - t0,
+        )
 
         # 4. Call LLM
         raw: dict[str, Any] = await self._llm.summarize(context)
-        logger.info("[%s] LLM response received (%.1fs)", cache_key, time.monotonic() - t0)
+        logger.info(
+            "[%s] LLM response received (%.1fs)", cache_key, time.monotonic() - t0
+        )
 
         response = SummarizeResponse(
             summary=raw.get("summary", ""),

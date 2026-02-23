@@ -1,12 +1,15 @@
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, field_validator
 import re
+
+from pydantic import BaseModel, Field, field_validator
 
 
 class SummarizeRequest(BaseModel):
     github_url: str = Field(
-        ..., description="Full GitHub repository URL", examples=["https://github.com/owner/repo"]
+        ...,
+        description="Full GitHub repository URL",
+        examples=["https://github.com/owner/repo"],
     )
 
     @field_validator("github_url")
@@ -32,6 +35,7 @@ class SummarizeResponse(BaseModel):
 
 class RepoFile(BaseModel):
     """Internal model representing a scored repository file."""
+
     path: str
     size: int
     score: float = 0.0
